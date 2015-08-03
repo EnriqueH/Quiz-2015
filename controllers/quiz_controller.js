@@ -1,5 +1,7 @@
 var models = require('../models/models.js');
 
+var temas = models.temas;
+
 // Autoload- factoriza el código si ruta incluye :quizId
 exports.load = function(req, res, next, quizId){
   models.Quiz.find(quizId).then(
@@ -51,9 +53,9 @@ exports.answer = function(req, res) {
 // GET /quizes/new
 exports.new = function(req, res) {
   var quiz = models.Quiz.build( //Crea objeto quiz
-    {pregunta: "Pregunta", respuesta: "Respuesta"}
+    {pregunta: "Pregunta", respuesta: "Respuesta", tema: "Otro"}
   );
-  res.render('quizes/new', {quiz: quiz, errors:[] });
+  res.render('quizes/new', {quiz: quiz, errors:[], temas: temas });
 };
 
 // POST /quizes/create
@@ -63,11 +65,11 @@ exports.create = function(req, res) {
   .validate()
   .then( function(err) {
             if (err) {
-              res.render('quizes/new', {quiz: quiz, errors: err.errors });
+              res.render('quizes/new', {quiz: quiz, errors: err.errors, temas: temas });
             } else {
               quiz
                 // guarda en DB los campos pregunta y respuesta de quiz
-                .save({fields: ["pregunta", "respuesta"]})
+                .save({fields: ["pregunta", "respuesta", "tema"]})
                 //Redirección HTTP (URL relativo) lista de preguntas
                 .then (function(){res.redirect('/quizes')})
             }
@@ -79,23 +81,24 @@ exports.create = function(req, res) {
 exports.edit = function(req, res){
   var quiz = req.quiz; // autoload de instancia de quiz
 
-  res.render('quizes/edit', { quiz: quiz, errors: [] });
+  res.render('quizes/edit', { quiz: quiz, errors: [], temas: temas });
 };
 
 // PUT /quizes/:id
 exports.update = function(req, res) {
   req.quiz.pregunta = req.body.quiz.pregunta;
   req.quiz.respuesta = req.body.quiz.respuesta;
+  req.quiz.tema = req.body.quiz.tema;
 
   req.quiz
   .validate()
   .then( function(err) {
             if (err) {
-              res.render('quizes/edit', {quiz: req.quiz, errors: err.errors });
+              res.render('quizes/edit', {quiz: req.quiz, errors: err.errors, temas: temas });
             } else {
               req.quiz
                 // guarda en DB los campos pregunta y respuesta de quiz
-                .save({fields: ["pregunta", "respuesta"]})
+                .save({fields: ["pregunta", "respuesta", "tema"]})
                 //Redirección HTTP (URL relativo) lista de preguntas
                 .then (function(){res.redirect('/quizes')})
             }

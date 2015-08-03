@@ -27,6 +27,12 @@ var sequelize = new Sequelize(DB_name, user, pwd,
   }
 );
 
+// Crear array de los valores de temas permitidos para los quiz
+var temas = ['Otro', 'Humanidades', 'Ocio', 'Ciencia', 'Tecnología'];
+
+// Exportar los valores de temas permitidos para los quiz
+exports.temas = temas;
+
 // Importar la definición de la tabla Quiz en quiz.js
 var Quiz = sequelize.import(path.join(__dirname, 'quiz'));
 
@@ -39,12 +45,14 @@ sequelize.sync().then(function() {
   Quiz.count().then(function(count){
     if (count === 0) { // La tabla se inicializa sólo si está vacía
       Quiz.create({
-                    pregunta: 'Capital de Italia',
-                    respuesta: 'Roma'
+                    pregunta:  'Capital de Italia',
+                    respuesta: 'Roma',
+                    tema:      'Humanidades'
                   });
       Quiz.create({
-                    pregunta: 'Capital de Portugal',
-                    respuesta: 'Lisboa'
+                    pregunta:  'Capital de Portugal',
+                    respuesta: 'Lisboa',
+                    tema:      'Humanidades'
                   })
       .then(function(){console.log('Base de datos inicializada')});
     };

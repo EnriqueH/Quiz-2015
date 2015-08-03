@@ -1,13 +1,20 @@
 <!-- Formulario para buscar preguntas con el texto introducido en la busqueda -->
 <form method="get" action="/quizes">
-  <input type="text" name="search" value="Pregunta a buscar" />
+  <input type="text" name="search" placeholder="Pregunta a buscar" />
   <input type="submit" value="Buscar" />
 </form>
 
 <!-- Tabla generada por el bucle for que muestra las preguntas -->
 <table>
+  <tr>
+    <th>Tema</th>
+    <th>Pregunta</th>
+    <th> </th>
+    <th> </th>
+  </tr>
   <% var i; for (i=0; i < quizes.length; i++) { %>
     <tr>
+      <td><%=quizes[i].tema %></a></td>
       <td><a href="quizes/<%= quizes[i].id %>"><%=quizes[i].pregunta %></a></td>
       <td><a href="quizes/<%= quizes[i].id %>/edit"><button>editar</button></a></td>
       <td>
