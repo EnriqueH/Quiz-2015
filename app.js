@@ -10,6 +10,8 @@ var session = require('express-session');
 
 var routes = require('./routes/index');
 
+var autologout = require('./modules/autologout');
+
 var app = express();
 
 // view engine setup
@@ -41,6 +43,8 @@ app.use(function(req, res, next){
   res.locals.session = req.session;
   next();
 });
+
+app.use(autologout());
 
 app.use('/', routes);
 
